@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 
-run_unison () {
-    local status=1
+#run_unison () {
+#    local status=1
 
-    while [ $status != 0 ]; do
-        unison magento2
-        status=$?
-    done
-}
+#    while [ $status != 0 ]; do
+#        unison magento2
+#        status=$?
+#    done
+#}
 
-MAGE_DIR=/var/www/html/magento2
+#MAGE_DIR=/var/www/html/magento2
 
-rm -rf $MAGE_DIR/status.html
-rm -rf /home/magento2/magento2/status.html
+#rm -rf $MAGE_DIR/status.html
+#rm -rf /home/magento2/magento2/status.html
 
 #if [ -n $USE_SHARED_WEBROOT ]
 #then
@@ -68,5 +68,5 @@ rm -rf /home/magento2/magento2/status.html
 #    sudo -u www-data sh -c '/usr/local/bin/unison -socket 5000 2>&1 >/dev/null' &
 #fi
 
-/usr/local/bin/unison.sh
+#/usr/local/bin/unison.sh
 supervisord -n -c /etc/supervisord.conf
