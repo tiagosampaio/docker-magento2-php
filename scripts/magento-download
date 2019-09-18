@@ -1,0 +1,80 @@
+#!/bin/bash
+
+SILENT=0
+
+while getopts 'v:s' opt
+do
+  case $opt in
+    s) SILENT=1
+      ;;
+    v) MAGE_VERSION=$OPTARG
+      ;;
+    *) echo "Try it again."
+      exit;
+      ;;
+  esac
+done
+
+[ -z "$MAGE_VERSION" ] && echo "Please specify the version to download (ex. 2.3.2)" && exit
+
+# Filename
+FILENAME=$MAGE_VERSION.tar.gz
+
+# Magento Source Repository
+ARCHIVE_URL="https://github.com/tiagosampaio/magento-opensource-releases/archive"
+
+# Full Magento Download URL.
+DOWNLOAD_URL="$ARCHIVE_URL/$FILENAME"
+
+# Var directory
+VAR_DIR="/var"
+
+# MAgento Releases Directory
+MAGE_RELEASES_DIR="$VAR_DIR/magento/releases"
+
+########################################################################################################################
+# Print strings checking the supress variable.
+########################################################################################################################
+print()
+{
+  if [ "$SILENT" == 0 ]; then
+    echo $1
+  fi
+}
+
+########################################################################################################################
+# Check the Magento source directory.
+########################################################################################################################
+check_dir()
+{
+    if ! [ -d "$MAGE_RELEASES_DIR" ]; then
+        mkdir -p "$MAGE_RELEASES_DIR"
+    fi
+}
+
+########################################################################################################################
+# Download the Magento Source.
+########################################################################################################################
+download()
+{
+    check_dir
+
+    FINAL_FILE="$MAGE_RELEASES_DIR/$FILENAME"
+
+    if ! [ -f "$FINAL_FILE" ]; then
+        print "Checking Magento Source (v$MAGE_VERSION) availability..."
+        RESPONSE=$(curl -L -s -o /dev/null -w "%{HTTP_CODE}" "$DOWNLOAD_URL")
+
+        if [ "$RESPONSE" == "404" ]; then
+            print "The version $MAGE_VERSION of Magento Open Source is not available for download."
+            exit 0
+        fi
+
+        print "Starting the download..."
+        curl -L "$DOWNLOAD_URL" -o "$FINAL_FILE"
+    else
+        print "The version $MAGE_VERSION of Magento Open Source is already downloaded."
+    fi
+}
+
+download
