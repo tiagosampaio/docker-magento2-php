@@ -1,12 +1,12 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 # Wait until MySQL is available.
-sh /var/scripts/mysql-wait.sh
+mysql-wait
 
 #Install PHP
 php /var/www/html/magento2/bin/magento setup:install \
 	--base-url=http://${MAGENTO_DOMAIN} \
-	--db-host=database \
+	--db-host=${MYSQL_HOST} \
 	--db-name=${MYSQL_DATABASE} \
 	--db-user=${MYSQL_USER} \
 	--db-password=${MYSQL_PASSWORD} \
