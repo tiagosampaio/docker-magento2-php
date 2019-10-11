@@ -43,6 +43,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     supervisor \
     procps \
+    nodejs \
     vim \
         && echo "syntax on" >> ~/.vimrc \
         && echo "filetype plugin indent on" >> ~/.vimrc \
